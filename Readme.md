@@ -1,4 +1,4 @@
-Brother Print Script - Readme
+Brother Print Script to print from a Brother label printer using powershell and bpac
 ==============================================
 
 Made by : Ali Ahammed Rohid 
