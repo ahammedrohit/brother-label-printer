@@ -1,7 +1,8 @@
 Brother Print Script - Readme
+==============================================
+
 Made by : Ali Ahammed Rohid 
 For : Kikuya Bisyodo Inc.
-==============================================
 
 
 This script utilizes the Brother BPAC library to print labels using a Brother printer. Please provide the following arguments when executing the script:
