@@ -12,6 +12,8 @@ $Customer_address = $args[2]
 $Customer_phone_number = $args[3]
 
 if ($Customer_phone_number.Length -eq 10) {
+    $Customer_phone_number_formatted = "0{0:##-####-####}" -f [double]$Customer_phone_number
+} elseif ($Customer_phone_number.Length -eq 11) {
     $Customer_phone_number_formatted = "{0:###-####-####}" -f [double]$Customer_phone_number
 } else {
     $Customer_phone_number_formatted = $Customer_phone_number
@@ -35,8 +37,18 @@ $Saloon_address = $args[14]
 
 # $Delivery_msg = $args[15]
 $Slip_msg_unformatted = $args[15]
+$S_phone_number = $args[16]
 
-$Printer_Name = $args[16]
+if ($S_phone_number.Length -eq 10) {
+    $Saloon_phone_number = "TEL: 0{0:##-####-####}" -f [double]$S_phone_number
+} elseif ($S_phone_number.Length -eq 11) {
+    $Saloon_phone_number = "TEL: {0:###-####-####}" -f [double]$S_phone_number
+} else {
+    $Saloon_phone_number = $S_phone_number
+}
+
+
+$Printer_Name = $args[17]
 
 if (![string]::IsNullOrEmpty($Slip_msg_unformatted)) {
     $Slip_msg_c = [double]$Slip_msg_unformatted
@@ -71,6 +83,7 @@ if ($foundPrinter) {
         $Label.GetObject('saloon_name').Text = $Saloon_name
         $Label.GetObject('saloon_zip_code').Text = $Saloon_zip_code
         $Label.GetObject('saloon_address').Text = $Saloon_address
+        $Label.GetObject('saloon_phone_number').Text = $Saloon_phone_number
 
         # $Label.GetObject('delivery_msg').Text = $Delivery_msg
         $Label.GetObject('slip_msg').Text = $Slip_msg

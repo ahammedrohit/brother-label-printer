@@ -38,10 +38,12 @@ This script utilizes the Brother BPAC library to print labels using a Brother pr
 
 16. Slip Message: An optional slip message. If provided, it will be formatted as Japanese currency and preceded by the yen sign. For example: "49060".
 
-17. Printer Name: The name of the printer. For example: "Brother TD-4420DN".
+17. Saloon Phone Number: The phone number of the saloon. Format it as a 10-digit/11-digit number without hyphens. For example: 8011112222.
+
+18. Printer Name: The name of the printer. For example: "Brother TD-4420DN".
 
 Example Commands : 
 
-.\brother_Print.ps1 "1112222" "1111000" "東京都渋谷区恵比寿西１－１３－７ＫＢ東京都渋谷区東京都渋谷区恵比寿西１－１３－７ＫＢ東京都渋谷区東京都渋谷区恵比寿西１－１３－７ＫＢ東京都渋谷区" "08011112222" "John Doe" "佐川" "121212121212" "5" "佐川代引 (LC)" "2023/06/01" "2023/06/02" "12時～14時" "株式会社きくや美粧堂サロンあいうえおかき" "3334444" "東京都渋谷区恵比寿西東京都渋谷区恵比寿西１－１３－７" "49060" "Brother TD-4420DN"
+.\brother_Print.ps1 "1112222" "1111000" "東京都渋谷区恵比寿西１－１３－７ＫＢ東京都渋谷区東京都渋谷区恵比寿西１－１３－７ＫＢ東京都渋谷区東京都渋谷区恵比寿西１－１３－７ＫＢ東京都渋谷区" "08011112222" "John Doe" "佐川" "121212121212" "5" "佐川代引 (LC)" "2023/06/01" "2023/06/02" "12時～14時" "株式会社きくや美粧堂サロンあいうえおかき" "3334444" "東京都渋谷区恵比寿西東京都渋谷区恵比寿西１－１３－７" "49060" "8011112222" "Brother TD-4420DN"
 
 powershell.exe -ExecutionPolicy Bypass -File fileName.ps1 arg[0] arg[1] ... arg[n]
