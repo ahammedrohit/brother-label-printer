@@ -1,8 +1,6 @@
 param (
-    [Parameter(Mandatory = $false)]
-    [int]$sod,
-    [Parameter(Mandatory = $false)]
-    [int]$tod,
+    [Parameter(Mandatory = $true)]
+    [int]$id,
     [Parameter(Mandatory = $true)]
     [string]$p
 )
@@ -12,14 +10,11 @@ Add-Type -Path "$PSScriptRoot\Interop.bpac.dll"
 $Printers = New-Object bpac.PrinterClass
 
 
-if ($sod) {
-    $url = "http://192.168.25.235:8080/v1/slip/so/delivery/$sod"
-}
-elseif ($tod) {
-    $url = "http://192.168.25.235:8080/v1/slip/to/delivery/$tod"
+if ($id) {
+    $url = "http://192.168.25.235:8080/v1/slip/so/delivery/$id"
 }
 else {
-    Write-Error "Please provide either -sod or -tod parameter."
+    Write-Error "Please provide order id parameter."
     return
 }
 
@@ -86,6 +81,7 @@ if ($StatusCode -eq 200) {
 
     $Label = New-Object bpac.DocumentClass
     $Filename = $PSScriptRoot + '\Template_v3.lbx'
+    $LabelFilename = $PSScriptRoot + '\' + $id + '.lbx'
 
     $foundPrinter = $Printers.GetInstalledPrinters() | Where-Object { $_ -like $Printer_Name }
     if ($foundPrinter) {
@@ -117,7 +113,7 @@ if ($StatusCode -eq 200) {
 
             try {
                 $Label.SetPrinter($foundPrinter, 0)
-                $Label.StartPrint('', 0)
+                $Label.StartPrint($LabelFilename, 0)
                 $Label.PrintOut(1, 0)
                 $Label.Close()
                 $Label.EndPrint()
