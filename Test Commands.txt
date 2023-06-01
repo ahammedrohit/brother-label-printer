@@ -1,0 +1,7 @@
+powershell.exe -ExecutionPolicy Bypass -File Install_B-PAC.ps1
+
+powershell.exe -ExecutionPolicy Bypass -File brother_print.ps1 -sod 1435 -p "Brother TD-4420DN"
+
+
+*****For v1*****
+powershell.exe -ExecutionPolicy Bypass -File .\brother_Print.ps1 "1112222" "1111000" "東京都渋谷区恵比寿西１－１３－７ＫＢ東京都渋谷区東京都渋谷区恵比寿西１－１３－７ＫＢ東京都渋谷区東京都渋谷区恵比寿西１－１３－７ＫＢ東京都渋谷区" "08011112222" "John Doe" "佐川" "121212121212" "5" "佐川代引 (LC)" "2023/06/01" "2023/06/02" "12時～14時" "株式会社きくや美粧堂サロンあいうえおかき" "3334444" "東京都渋谷区恵比寿西東京都渋谷区恵比寿西１－１３－７" "49060" "8011112222" "Brother TD-4420DN"

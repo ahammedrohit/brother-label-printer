@@ -40,3 +40,31 @@ else {
         Write-Output "Unable to find the bcciw34007_64.msi file in the lib folder."
     }
 }
+
+$dllPath = $PSScriptRoot + '\Interop.bpac.dll'
+
+$files = Get-ChildItem -Path $PSScriptRoot -File -Recurse
+
+foreach ($file in $files) {
+    $filePath = $file.FullName
+    if (Test-Path $filePath) {
+        $stream = [System.IO.File]::Open($filePath, 'Open', 'Read', 'Write')
+        $stream.Close()
+    }
+}
+
+$dllPath = $PSScriptRoot + '\Interop.bpac.dll'
+
+Unblock-File -Path $dllPath
+
+# Get the path to the latest version of regasm.exe
+$regasmPath = Get-ChildItem -Path "C:\Windows\Microsoft.NET\Framework64" -Filter "regasm.exe" -Recurse -File |
+Select-Object -First 1 -ExpandProperty FullName
+
+if ($regasmPath) {
+    Write-Output "Found regasm.exe at: $regasmPath"
+    Start-Process -FilePath $regasmPath -ArgumentList "$dllPath /codebase" -Wait
+}
+else {
+    Write-Output "regasm.exe not found."
+}
