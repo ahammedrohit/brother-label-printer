@@ -140,5 +140,3 @@ if ($StatusCode -eq 200) {
     Write-Error "Error: $StatusCode"
     return
 }
-
-

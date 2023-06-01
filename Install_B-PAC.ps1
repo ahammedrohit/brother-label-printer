@@ -68,3 +68,31 @@ if ($regasmPath) {
 else {
     Write-Output "regasm.exe not found."
 }
+
+$fontFamilies = @('MS Gothic', 'ＭＳ ゴシック', 'ＭＳ Ｐゴシック')
+
+$fontFound = $false
+
+$fontRegistryPath = 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts'
+$fontRegistryKey = Get-ItemProperty -Path $fontRegistryPath
+
+foreach ($fontFamily in $fontFamilies) {
+    if ($fontRegistryKey -match "(?i)$fontFamily") {
+        $fontFound = $true
+        break
+    }
+}
+
+if ($fontFound) {
+    Write-Output "MS Gothic font is installed."
+}
+else {
+    Write-Output "Installing MSGOTHIC.TTC font..."
+    try {
+        Add-Font -LiteralPath $fontPath
+        Write-Output "MSGOTHIC.TTC font installed successfully."
+    }
+    catch {
+        Write-Output "Failed to install MSGOTHIC.TTC font."
+    }
+}
