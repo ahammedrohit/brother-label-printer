@@ -1,6 +1,6 @@
 powershell.exe -ExecutionPolicy Bypass -File Install_B-PAC.ps1
 
-powershell.exe -ExecutionPolicy Bypass -File brother_print.ps1 -id 1435 -p "Brother TD-4420DN"
+pwsh -ExecutionPolicy Bypass -File brother_print.ps1 -id 1435 -p "Brother TD-4420DN"
 
 
 *****For v1*****

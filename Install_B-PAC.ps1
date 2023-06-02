@@ -1,3 +1,5 @@
+#Check if any program named or containing "b-pac" is installed and install it if not
+
 $programName = "b-pac"
 
 # Check if any program named or containing "b-pac" is installed
@@ -41,6 +43,41 @@ else {
     }
 }
 
+# Direct Install b-pac client component for 64-bit without checking if it is already installed
+
+# $msiFile = Join-Path $PSScriptRoot "lib\bcciw34007_64.msi"
+
+# if (Test-Path $msiFile) {
+#     Write-Output "Installing b-pac..."
+#     $startProcessParams = @{
+#         FilePath     = "msiexec.exe"
+#         ArgumentList = "/i `"$msiFile`" /quiet"
+#         Verb         = "RunAs"
+#         Wait         = $true
+#         PassThru     = $false
+#     }
+        
+#     try {
+#         Start-Process @startProcessParams
+#         $programInstalled = Get-WmiObject -Query "SELECT * FROM Win32_Product WHERE Name LIKE '%$programName%'"
+            
+#         if ($programInstalled) {
+#             Write-Output "b-pac installed successfully."
+#         }
+#         else {
+#             Write-Output "Failed to install b-pac."
+#         }
+#     }
+#     catch {
+#         Write-Output "Failed to start the installation process."
+#     }
+# }
+# else {
+#     Write-Output "Unable to find the bcciw34007_64.msi file in the lib folder."
+# }
+
+# Unlock dll and all files
+
 $dllPath = $PSScriptRoot + '\Interop.bpac.dll'
 
 $files = Get-ChildItem -Path $PSScriptRoot -File -Recurse
@@ -69,30 +106,34 @@ else {
     Write-Output "regasm.exe not found."
 }
 
-$fontFamilies = @('MS Gothic', 'ＭＳ ゴシック', 'ＭＳ Ｐゴシック')
-
-$fontFound = $false
-
-$fontRegistryPath = 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts'
-$fontRegistryKey = Get-ItemProperty -Path $fontRegistryPath
-
-foreach ($fontFamily in $fontFamilies) {
-    if ($fontRegistryKey -match "(?i)$fontFamily") {
-        $fontFound = $true
-        break
-    }
+#Install Powershell 7
+function IsPowerShellInstalled {
+    return $PSVersionTable.PSVersion.Major -ge 7
 }
 
-if ($fontFound) {
-    Write-Output "MS Gothic font is installed."
+# Attempt to install PowerShell using winget
+$wingetInstallCommand = "winget install --id Microsoft.Powershell --source winget"
+Invoke-Expression -Command $wingetInstallCommand
+
+if (IsPowerShellInstalled) {
+    Write-Host "PowerShell installed successfully."
 }
 else {
-    Write-Output "Installing MSGOTHIC.TTC font..."
+    Write-Host "PowerShell installation using winget failed. Falling back to manual installation."
+
+    $downloadUrl = "https://github.com/PowerShell/PowerShell/releases/download/v7.3.4/PowerShell-7.3.4-win-x64.msi"
+    $destinationPath = "$env:TEMP\PowerShell-7.3.4-win-x64.msi"
+
     try {
-        Add-Font -LiteralPath $fontPath
-        Write-Output "MSGOTHIC.TTC font installed successfully."
+        Invoke-WebRequest -Uri $downloadUrl -OutFile $destinationPath
+
+        Start-Process -FilePath msiexec.exe -ArgumentList "/i `"$destinationPath`" /qn /norestart" -Wait -Verb RunAs
+
+        Remove-Item -Path $destinationPath -Force
+
+        Write-Host "PowerShell installed successfully."
     }
     catch {
-        Write-Output "Failed to install MSGOTHIC.TTC font."
+        Write-Host "Error occurred during PowerShell installation: $_"
     }
 }
